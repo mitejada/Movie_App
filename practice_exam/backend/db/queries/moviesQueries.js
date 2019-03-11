@@ -13,12 +13,12 @@ db.any('SELECT * FROM movies')
   })
 }
 
-const getAllMoviesBasedOnId = (req, res, next) => {
+const getMovieBasedOnId = (req, res, next) => {
   let moviesId = parseInt(req.params.id)
-  db.one('SELECT * FROM movies WHERE id=$1', moviesId)
-    .then(movies => {
+  db.one('SELECT * FROM movies WHERE id=$1', [moviesId])
+    .then(movie => {
       res.status(200).json({
-        movies: movies
+        movie: movie
       })
     })
     .catch(err => {
@@ -27,8 +27,17 @@ const getAllMoviesBasedOnId = (req, res, next) => {
 }
 
 const getAllMoviesBasedOnGenre = (req, res, next) => {
-
+  const movieGenre = req.params.id
+  db.any('SELECT * FROM movies JOIN genres ON genres.id = movies.genre_id WHERE genres.id=$1', movieGenre)
+    .then(data => {
+      res.status(200).json({
+        data: data
+      })
+    })
+    .catch(err => {
+      return next(err)
+    })
 }
 
 
-module.exports = { getAllMovies, getAllMoviesBasedOnId }
+module.exports = { getAllMovies, getMovieBasedOnId, getAllMoviesBasedOnGenre }
