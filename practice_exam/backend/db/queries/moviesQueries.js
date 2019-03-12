@@ -2,7 +2,7 @@ const { db } = require('./index.js')
 
 
 const getAllMovies = (req, res, next) => {
-db.any('SELECT * FROM movies')
+db.any('SELECT movies.id, title, img_url, name, array_agg(distinct comments.comments_text) AS comments, ROUND(AVG(stars_rating), 2) AS average_rating FROM movies JOIN genres ON movies.genre_id = genres.id JOIN ratings ON ratings.movieRating_id = movies.id JOIN comments ON comments.movie_id  = movies.id GROUP BY movies.id, title, img_url, name ')
   .then(movies => {
     res.status(200).json({
       movies: movies
@@ -13,9 +13,22 @@ db.any('SELECT * FROM movies')
   })
 }
 
-const getMovieBasedOnId = (req, res, next) => {
-  let moviesId = parseInt(req.params.id)
-  db.one('SELECT * FROM movies WHERE id=$1', [moviesId])
+const getAllCommentsForOneMovie = (req, res, next) => {
+  const movieComments = req.params.id
+  db.any('SELECT * FROM movies JOIN comments ON comments.movie_id = movies.id WHERE movies.id=$1', movieComments)
+    .then(movie => {
+      res.status(200).json({
+        movie: movie
+      })
+    })
+    .catch(err => {
+      return next(err)
+    })
+}
+
+const getSingleMovieInfo = (req, res, next) => {
+  let moviesId = req.params.id
+  db.one('SELECT * FROM movies JOIN genres ON genres.id = movies.genre_id JOIN comments ON comments.movie_id = movies.id JOIN ratings ON ratings.movieRating_id = movies.id WHERE movies.id=$1', moviesId )
     .then(movie => {
       res.status(200).json({
         movie: movie
@@ -40,4 +53,4 @@ const getAllMoviesBasedOnGenre = (req, res, next) => {
 }
 
 
-module.exports = { getAllMovies, getMovieBasedOnId, getAllMoviesBasedOnGenre }
+module.exports = { getAllMovies, getSingleMovieInfo, getAllMoviesBasedOnGenre, getAllCommentsForOneMovie }

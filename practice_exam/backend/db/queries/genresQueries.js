@@ -1,7 +1,7 @@
 const { db } = require('./index.js')
 
 const getAllGenres = (req, res, next) => {
-  db.any('SELECT * FROM genres')
+  db.any('SELECT * FROM genres JOIN movies ON movies.genre_id = genres.id')
     .then(data => {
       res.status(200).json({
         data: data

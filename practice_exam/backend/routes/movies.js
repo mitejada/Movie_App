@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
-const { getAllMovies, getMovieBasedOnId, getAllMoviesBasedOnGenre } = require('../db/queries/moviesQueries.js')
+const { getAllMovies, getSingleMovieInfo, getAllMoviesBasedOnGenre, getAllCommentsForOneMovie } = require('../db/queries/moviesQueries.js')
 
 /* GET users listing. */
 router.get('/', getAllMovies);
 router.get('/genre/:id', getAllMoviesBasedOnGenre);
-router.get('/:id', getMovieBasedOnId)
+router.get('/:id', getSingleMovieInfo)
+router.get('/comments/:id', getAllCommentsForOneMovie)
 
 module.exports = router;
