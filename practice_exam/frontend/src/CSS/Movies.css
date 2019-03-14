@@ -2,3 +2,8 @@
   width: 400px;
   height: 500px;
 }
+
+.links {
+  display: flex;
+  justify-content: space-around;
+}

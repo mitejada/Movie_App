@@ -12,6 +12,8 @@ const getAllGenres = (req, res, next) => {
     })
 }
 
+// array_agg(distinct comments.comments_text) AS comments
+
 const getAllMoviesWithOneGenre = (req, res, next) => {
   let genreId = parseInt(req.params.id)
   db.one('SELECT * FROM genres WHERE id=$1', genreId)

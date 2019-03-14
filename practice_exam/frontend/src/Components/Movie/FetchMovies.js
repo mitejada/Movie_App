@@ -22,22 +22,61 @@ class FetchMovies extends Component {
     })
   }
 
-  findMovie = (movieName) => {
-    let movieSearch = this.state.movieStorage.find(movie => {
-      console.log('hello');
-      if(movie.title.toLowerCase() === this.state.movieTitle.toLowerCase()) {
-        this.setState({
-          selectedMovie: movie,
-          submit: true
-        })
-      }
-      return {movieSearch}
+  handleChange = (event) => {
+    this.setState({
+      movieTitle: event.target.value
     })
   }
+
+  findMovie = () => {
+    let movieSearch = this.state.movieStorage.filter(movie => {
+      if(movie.title.toLowerCase() === this.state.movieTitle.toLowerCase()) {
+        return true
+      } else {
+        return false
+      }
+    })
+
+    if(movieSearch) {
+      this.setState({
+        selectedMovie: movieSearch
+      })
+    }
+
+    console.log(movieSearch);
+  }
+
 
   componentDidMount(){
     this.getAllMovies()
   }
+
+  renderMovieList = () => {
+    if(this.state.selectedMovie.length) {
+      const renderMovieInfo = this.state.selectedMovie.map(info => {
+        return (
+          <div key={info.id}>
+          <h3>Title: {info.title}</h3>
+          <img className='movie_img' src={info.img_url} alt=''></img>
+          <p>Ratings: {info.average_rating}</p>
+          </div>
+        )
+      })
+      return renderMovieInfo
+    } else {
+      const renderMovieInfo = this.state.movieStorage.map(info => {
+        return (
+          <div key={info.id}>
+          <h3>Title: {info.title}</h3>
+          <img className='movie_img' src={info.img_url} alt=''></img>
+          <p>Ratings: {info.average_rating}</p>
+          </div>
+        )
+      })
+      return renderMovieInfo
+    }
+  }
+
 
   getAllMovies = () => {
     axios.get('/movies')
@@ -53,29 +92,14 @@ class FetchMovies extends Component {
 
   render(){
 
-    const renderMovieInfo = this.state.movieStorage.map(info => {
-        return (
-          <div key={info.id}>
-          <h3>Title: {info.title}</h3>
-          <img className='movie_img' src={info.img_url} alt=''></img>
-          <p>Ratings: {info.average_rating}</p>
-          </div>
-        )
-    })
 
-    if(!this.state.submit) {
       return (
         <div>
-          {renderMovieInfo}
+        <MovieSearchForm findMovie={this.findMovie} handleChange={this.handleChange} movieTitle={this.state.movieTitle} selectedMovie={this.state.selectedMovie}/>
+        {this.renderMovieList()}
         </div>
+
       )
-  } else {
-    return (
-      <div>
-      <MovieSearchForm findMovie={this.findMovie} selectedMovie={this.state.selectedMovie}/>
-      </div>
-    )
-  }
   }
 }
 

@@ -7,45 +7,33 @@ class MovieSearchForm extends Component {
   constructor(props){
     super(props)
     this.state = {
-      movieName: ''
+      submitted: false
     }
   }
 
   handleSubmit = (event) => {
-    console.log(this.state.movieName);
    event.preventDefault();
-   this.props.findMovie(this.state.movieName)
- }
+   this.props.findMovie()
 
- handleChange = (event) => {
    this.setState({
-     movieName: event.target.value
+    submitted: true
    })
  }
 
+
   render(){
-    const selectedMovieInfo = this.props.selectedMovie.map(info => {
-        return (
-          <div key={info.id}>
-          <h3>Title: {info.title}</h3>
-          <img className='movie_img' src={info.img_url} alt=''></img>
-          <p>Ratings: {info.average_rating}</p>
-          </div>
-        )
-    })
     return(
       <div>
         <form onSubmit={this.handleSubmit}>
           <input
           className='search_input'
           name='movieName'
-          value={this.state.movieName}
-          onChange={this.handleChange}
+          value={this.props.movieTitle}
+          onChange={this.props.handleChange}
           type='text'
           placeholder='Search Movie'/>
           <button type='submit'>Submit</button>
         </form>
-        {selectedMovieInfo}
       </div>
     )
   }

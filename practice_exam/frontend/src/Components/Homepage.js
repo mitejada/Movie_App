@@ -6,7 +6,10 @@ const Homepage = () => {
     <div>
       <h1>Welcome to Review Me ! The Premiere Web Movie Review Website in the world ! </h1>
 
-      <Link to='/movies'>Movies</Link>
+      <div className='links'>
+        <Link to='/movies'>Movies</Link>
+        <Link to='/movies/byGenre'>By Genre</Link>
+      </div>
     </div>
   )
 }

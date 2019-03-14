@@ -18,8 +18,8 @@ CREATE TABLE movies (
 
 CREATE TABLE ratings (
   id SERIAL PRIMARY KEY,
-  movieRating_id INT REFERENCES movies(id) ON DELETE CASCADE,
-  stars_rating INT
+  stars_rating INT NOT NULL,
+  movieRating_id INT REFERENCES movies(id) ON DELETE CASCADE
 );
 
 CREATE TABLE comments (
@@ -42,7 +42,19 @@ VALUES ('Saw', 1, 'https://earofnewtdotcom.files.wordpress.com/2017/10/jigsaw-mo
 ('Diary of A Mad Black Women', 2, 'https://images-na.ssl-images-amazon.com/images/I/81skf%2B0aYLL._SY445_.jpg');
 
 INSERT INTO ratings (stars_rating, movieRating_id)
-VALUES (5, 1), (4.5, 2), (4, 3), (4.5, 4), (3.5, 5), (4, 6), (3.5, 7), (4, 7), (5, 3), (3, 3);
+VALUES (5, 1),
+(4.5, 2),
+(4, 3),
+(4.5, 4),
+(3.5, 5),
+(4, 6),
+(3.5, 7),
+(4, 7),
+(5, 3),
+(3, 3),
+(4.4, 1),
+(3.9, 2),
+(2.8, 5);
 
 INSERT INTO comments (comments_text, movie_id)
 VALUES ('Best movie in the whole world!', 1), ('This movie was so action packed! Wish it didnt end!', 2), ('This movie was very adventurous, made me want to go into the jungle', 3), ('Rebel Wilson is soooo hilarious!', 4), ('Jaws was one of the greatest shark movies ever', 5), ('This movie was jokes, never a dull moment', 6), ('Madea is the funniest women in the planet at this point', 7), ('This movie was alright', 7), ('Man Kevin Hart is just freaking great!', 3);
