@@ -62,7 +62,6 @@ class FetchMovies extends Component {
           <Link to={'/movies/' + info.id}><h2>Title: {info.title}</h2></Link>
           <img className='movie_img' src={info.img_url} alt=''></img>
           <p>Ratings: {info.average_rating}</p>
-          <p>Comments: {info.comments}</p>
           </div>
         )
       })
@@ -75,7 +74,6 @@ class FetchMovies extends Component {
           <h3>Title: {info.title}</h3>
           <img className='movie_img' src={info.img_url} alt=''></img>
           <p>Ratings: {info.average_rating}</p>
-          <p>Comments: {info.comments}</p>
           </div>
         )
       })

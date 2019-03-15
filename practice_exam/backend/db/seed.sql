@@ -18,7 +18,7 @@ CREATE TABLE movies (
 
 CREATE TABLE ratings (
   id SERIAL PRIMARY KEY,
-  stars_rating INT NOT NULL,
+  stars_rating INT,
   movieRating_id INT REFERENCES movies(id) ON DELETE CASCADE
 );
 

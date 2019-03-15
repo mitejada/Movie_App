@@ -7,3 +7,13 @@
   display: flex;
   justify-content: space-around;
 }
+
+.comments {
+  list-style: none;
+}
+
+.singleMovie_backButton {
+  display: flex;
+  justify-content: flex-start;
+  text-decoration: none;
+}
