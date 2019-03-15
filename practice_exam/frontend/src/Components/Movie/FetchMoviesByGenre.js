@@ -6,62 +6,90 @@ class FetchMoviesByGenre extends Component {
     super(props)
     this.state = {
       genreStorage: [],
-      clicked: false
+      genreName: [],
+      allGenres: [],
+      selectedGenreId: ''
     }
   }
 
   componentDidMount(){
-    this.getMoviesByGenre()
+    this.getAllGenres()
+    this.getGenreName()
   }
 
-  handleClick = (event) => {
+  handleChange = (event) => {
     this.setState({
-      clicked: event.target.value
+      selectedGenreId: event.target.value
     })
   }
 
-  getMoviesByGenre = (id) => {
-    axios.get('/genres')
-      .then(results => {
-        let newResults = new Set([results])
-        console.log('hello', [...newResults]);
-        // console.log(results)
-        this.setState({
-          genreStorage: results.data.data
-        })
+  getGenreName = () => {
+    axios.get('/genres/titles')
+    .then(response => {
+      this.setState({
+        genreName: response.data.data
       })
+    })
   }
 
+  handleSubmit = (event) => {
+    event.preventDefault()
+    axios.get(`/movies/genre/${this.state.selectedGenreId}`)
+    .then(results => {
+      this.setState({
+        genreStorage: results.data.data
+      })
+    })
+  }
+
+  getAllGenres = () => {
+    axios.get('/genres')
+    .then(response => {
+      this.setState({
+        allGenres: response.data.data
+      })
+    })
+  }
+
+
   render(){
-    const renderByGenre = this.state.genreStorage.map(genre => {
-      console.log(genre);
+    const renderByGenre = this.state.genreName.map(genre => {
       return (
-        <option key={genre.id}>
+        <option value={genre.id} key={genre.id}>
           {genre.name}
         </option>
       )
     })
 
     const infoForGenre = this.state.genreStorage.map(info => {
-      if(this.state.clicked === info.name) {
         return (
           <div className='movie_input' key={info.id}>
           <h3>Title: {info.title}</h3>
-          <img src={info.img_url} alt=''></img>
+          <img className='movie_img' src={info.img_url} alt=''></img>
           <p>Genre: {info.name}</p>
           </div>
         )
-      } else {
-        return null
-      }
-      })
+  })
+
+  // const displayAllGenreFirst = this.state.allGenres.map(showEverything => {
+  //   return (
+  //     <div className='movie_input' key={showEverything.id}>
+  //     <h3>Title: {showEverything.title}</h3>
+  //     <img className='movie_img' src={showEverything.img_url} alt=''></img>
+  //     <p>Genre: {showEverything.name}</p>
+  //     </div>
+  //   )
+  // })
 
     return (
       <div>
-        <select onClick={this.handleClick}>
-          <option>Select Genre</option>
+      <form onSubmit={this.handleSubmit}>
+        <select value={this.state.selectedGenreId} onChange={this.handleChange}>
+          <option value=''>Select Genre</option>
           {renderByGenre}
         </select>
+        <button type='submit'>Submit</button>
+      </form>
         {infoForGenre}
       </div>
     )

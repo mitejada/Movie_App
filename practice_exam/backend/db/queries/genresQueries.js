@@ -12,6 +12,18 @@ const getAllGenres = (req, res, next) => {
     })
 }
 
+const getGenreTitles = (req, res, next) => {
+  db.any('SELECT genres.id, name FROM genres')
+    .then(data => {
+      res.status(200).json({
+        data: data
+      })
+    })
+    .catch(err => {
+      return next(err)
+    })
+}
+
 // array_agg(distinct comments.comments_text) AS comments
 
 const getAllMoviesWithOneGenre = (req, res, next) => {
@@ -32,4 +44,4 @@ const getAllMoviesWithOneGenre = (req, res, next) => {
 
 
 
-module.exports = { getAllGenres, getAllMoviesWithOneGenre }
+module.exports = { getAllGenres, getAllMoviesWithOneGenre, getGenreTitles }

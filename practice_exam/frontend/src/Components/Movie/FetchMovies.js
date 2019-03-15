@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 import MovieSearchForm from './MovieSearchForm'
 import '../../CSS/Movies.css'
 
@@ -39,7 +40,8 @@ class FetchMovies extends Component {
 
     if(movieSearch) {
       this.setState({
-        selectedMovie: movieSearch
+        selectedMovie: movieSearch,
+        movieTitle: ''
       })
     }
 
@@ -54,22 +56,26 @@ class FetchMovies extends Component {
   renderMovieList = () => {
     if(this.state.selectedMovie.length) {
       const renderMovieInfo = this.state.selectedMovie.map(info => {
+        console.log(info);
         return (
           <div key={info.id}>
-          <h3>Title: {info.title}</h3>
+          <Link to={'/movies/' + info.id}><h2>Title: {info.title}</h2></Link>
           <img className='movie_img' src={info.img_url} alt=''></img>
           <p>Ratings: {info.average_rating}</p>
+          <p>Comments: {info.comments}</p>
           </div>
         )
       })
       return renderMovieInfo
     } else {
       const renderMovieInfo = this.state.movieStorage.map(info => {
+        console.log(info);
         return (
           <div key={info.id}>
           <h3>Title: {info.title}</h3>
           <img className='movie_img' src={info.img_url} alt=''></img>
           <p>Ratings: {info.average_rating}</p>
+          <p>Comments: {info.comments}</p>
           </div>
         )
       })

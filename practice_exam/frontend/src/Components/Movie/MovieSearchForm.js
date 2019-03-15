@@ -4,20 +4,10 @@ import '../../CSS/Movies.css'
 
 
 class MovieSearchForm extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      submitted: false
-    }
-  }
 
   handleSubmit = (event) => {
-   event.preventDefault();
+   event.preventDefault()
    this.props.findMovie()
-
-   this.setState({
-    submitted: true
-   })
  }
 
 

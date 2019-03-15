@@ -30,7 +30,7 @@ const getAllCommentsForOneMovie = (req, res, next) => {
 const getSingleMovieInfo = (req, res, next) => {
   let moviesId = req.params.id
 
-  db.any('SELECT movies.id, title, img_url, name, array_agg(distinct comments.comments_text) AS comments, AVG(distinct stars_rating) AS average_rating FROM movies JOIN genres ON genres.id = movies.genre_id JOIN comments ON comments.movie_id = movies.id JOIN ratings ON ratings.movieRating_id = movies.id WHERE movies.id=$1 GROUP BY movies.id, title, img_url, name', moviesId)
+  db.any('SELECT movies.id, title, img_url, name, array_agg(distinct comments.comments_text) AS comments, ROUND(AVG(distinct stars_rating),2) AS average_rating FROM movies JOIN genres ON genres.id = movies.genre_id JOIN comments ON comments.movie_id = movies.id JOIN ratings ON ratings.movieRating_id = movies.id WHERE movies.id=$1 GROUP BY movies.id, title, img_url, name', moviesId)
     .then(movie => {
       res.status(200).json({
         movie: movie
